@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "start": "concurrently \"npm run startServer\" \"npm run startClient\" -k",
+    "start:prod": "cd server && npm run start",
+    "startServer": "cd server && npm start && cd ../",
+    "startClient": "cd client && npm start && cd ../",
+    "install": "npm run installClient && npm run installServer",
+    "installServer": "cd server && npm install && cd ../",
+    "installClient": "cd client && npm install && cd ../",
+    "build": "cd client && npm run build"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.1.5",
+    "concurrently": "9.0.1"
+  }
+}
