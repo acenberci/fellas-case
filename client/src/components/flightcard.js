@@ -80,7 +80,7 @@ export default function FlightCard({ data }) {
                         <h4 className='text-xs font-semibold opacity-50'>{flightDuration}</h4>
                     </div>
                     <div className='flex flex-col gap-1'>
-                        <h4 className='text-xs font-semibold'>{departureAirport.iata_code} to {route.destinations[0]}</h4>
+                        <h4 className='text-xs font-semibold'>{departureAirport} to {route.destinations[0]}</h4>
                         <h4 className='text-xs font-semibold opacity-50'>{flightName}</h4>
                     </div>
                 </div>

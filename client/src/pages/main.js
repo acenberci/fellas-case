@@ -3,14 +3,13 @@ import TopBar from '../components/topbar';
 import TopFilter from '../components/topfilter';
 import axios from 'axios';
 import Flight from '../components/flight';
-import airportsData from '../assets/data/airports.json';
 import RightFilter from '../components/rightfilter';
 import { BuildingOfficeIcon, SunIcon } from '@heroicons/react/24/outline';
 import { HelperContext } from '../helpers/HelperContext';
 
 export default function Main() {
   const [flights, setFlights] = useState({mainList:[],filteredList:[]});
-  const { filter, setFilter, rightPanelFilter, setRightPanelFilter } = useContext(HelperContext);
+  const { filter, rightPanelFilter } = useContext(HelperContext);
   useEffect(() => {
     const fetchData = async () => {
       try {

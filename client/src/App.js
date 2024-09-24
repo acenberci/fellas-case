@@ -20,7 +20,7 @@ function App() {
     date:`${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}T${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}:00`
   })
   const [rightPanelFilter, setRightPanelFilter] = useState({
-    sortBy: 'scheduleDate',
+    sortBy: 'flightName',
     departureTime: 'option1',
     stops: '0',
     airline: '',

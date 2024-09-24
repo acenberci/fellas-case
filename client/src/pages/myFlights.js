@@ -5,21 +5,46 @@ import FlightCard from '../components/flightcard';
 
 export default function MyFlights() {
     const [avgPrice, setAvgPrice] = useState()
-    const [flights,setFlight] = useState([])
+    const [flights, setFlight] = useState({ mainFlights: [], sortedFlights: [] })
     useEffect(() => {
         const fetchData = async () => {
             let totalPrice = 0;
             try {
                 const response = await axios.get(`http://localhost:3001/flights/getFlights`);
-                response.data.map(r => { totalPrice += r.price })
+                response.data.forEach((r) => {
+                    totalPrice += r.price;
+                })
                 setAvgPrice(Math.round(totalPrice / response.data.length))
-                setFlight(response.data)
+                setFlight(a => ({ ...a, mainFlights: response.data, sortedFlights: [...response.data].reverse() }))
             } catch (error) {
                 console.error("Hata:", error);
             }
         };
         fetchData()
     }, [])
+    function sortBooks(e) {
+        switch (e.target.value) {
+            case "lastBooked":
+                setFlight((a) => ({ ...a, sortedFlights: [...a.mainFlights].reverse() }));
+                break;
+            case "firstBooked":
+                setFlight((a) => ({ ...a, sortedFlights: [...a.mainFlights] }));
+                break;
+            case "priceAscending":
+                let tempList = [...flights.mainFlights];
+                tempList.sort((a, b) => a.price - b.price);
+                setFlight((a) => ({ ...a, sortedFlights: tempList }));
+                break;
+            case "priceDescending":
+                let tempList2 = [...flights.mainFlights];
+                tempList2.sort((a, b) => b.price - a.price);
+                setFlight((a) => ({ ...a, sortedFlights: tempList2 }));
+                break;
+            default:
+                console.warn("Beklenmeyen değer:", e.target.value);
+                break;
+        }
+    }
     return (
         <>
             <header className='z-10 w-full py-1 px-6 box-border bg-w flex max-lg:flex-col justify-between items-center border-b shadow-sm bg-white mb-6 max-lg:gap-2'>
@@ -77,12 +102,13 @@ export default function MyFlights() {
                 <div className='flex justify-between px-6 max-sm:px-2'>
                     <div className='flex items-center gap-1'>
                         <label htmlFor="sortBy" className='text-sm font-semibold text-ellipsis whitespace-nowrap'>Sort by:</label>
-                        <select id="sortBy" name="sortBy" className='rounded-lg bg-transparent border-0 ring-0 font-bold text-sm'>
-                            <option value="recommended">Recommended</option>
-                            <option value="last">Last</option>
-                            <option value="first">First</option>
-                            <option value="price">Price</option>
+                        <select onChange={(e) => sortBooks(e)} id="sortBy" name="sortBy" className="rounded-lg bg-transparent border-0 ring-0 font-bold text-sm">
+                            <option value="lastBooked">Last Booked</option>
+                            <option value="firstBooked">First Booked</option>
+                            <option value="priceAscending">Price Ascending</option>
+                            <option value="priceDescending">Price Descending</option>
                         </select>
+
                     </div>
                     <div className='flex items-center gap-2'>
                         <div className='flex items-center justify-center rounded-full size-5 border-blue-500 text-blue-500 border font-semibold text-sm'>
@@ -94,8 +120,8 @@ export default function MyFlights() {
                         </div>
                     </div>
                 </div>
-                <div className='flex flex-col px-6 gap-6'>
-                    {flights.map((response,i)=><FlightCard key={i} data={response}></FlightCard>)}
+                <div className='flex flex-col px-6 pb-6 gap-6'>
+                    {flights.sortedFlights.map((response, i) => <FlightCard key={i} data={response}></FlightCard>)}
                 </div>
             </div>
         </>

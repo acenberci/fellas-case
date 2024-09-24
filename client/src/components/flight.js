@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import airportsData from '../assets/data/airports.json';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
 export default function Flight(props) {
     const [airline, setAirline] = useState(null);
     const [loading, setLoading] = useState(0);
+    const navigate = useNavigate();
     const destination = airportsData.find(a => a.iata_code === props.data.route.destinations[0]);
     const departure = airportsData.find(a => a.iata_code === props.data.departureAirport);
     const departureTime = new Date(props.data.scheduleDateTime);
@@ -62,6 +64,9 @@ export default function Flight(props) {
             setLoading(1);
             const response = await axios.post(`http://localhost:3001/flights/setFlight`, props.data);
             setLoading(response.data.error ? 2 : 3);
+            setTimeout(() => {
+                navigate('/myflights');
+              }, 500)
         } catch (error) {
             setLoading(2);
             console.error("Hata:", error);
