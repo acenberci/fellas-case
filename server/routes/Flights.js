@@ -23,7 +23,7 @@ router.post("/setFlight", async (req, res) => {
         await newFlight.save();
         res.status(201).json({ success: "Uçuş başarıyla kaydedildi" });
     } catch (error) {
-        res.status(409).json({ error: "Bu id ile başka bir uçuş zaten var" });
+        res.status(409).json({ error });
     }
 });
 

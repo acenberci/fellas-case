@@ -48,7 +48,7 @@ export default function Flight(props) {
         const checkIfAlreadyBooked = async () => {
             try {
                 const response = await axios.get(`http://localhost:3001/flights/getFlights`);
-                const alreadyBooked = response.data.some(flight => flight.id === props.data.id);
+                const alreadyBooked = response.data.some(flight => flight.id === props.data.id && props.data.departureAirport === flight.departureAirport);
                 setLoading(alreadyBooked ? 4 : 0);
             } catch (error) {
                 console.error("Hata:", error);
